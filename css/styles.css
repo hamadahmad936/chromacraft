@@ -827,3 +827,7 @@ body:has(#stickyBar) #waFloat { bottom: 96px; }
   .hero-copy h2 { font-size: 1.9rem; }
   .hero-photo { flex-basis: 240px; }
 }
+
+/* Compact customizer: keep the outer white working area tight around the canvas */
+#selfPanel { max-width: 720px; margin-left: auto; margin-right: auto; }
+.canvas-container { margin-left: auto; margin-right: auto; }
