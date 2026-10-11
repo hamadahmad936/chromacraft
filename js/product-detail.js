@@ -84,6 +84,17 @@ async function loadDetail() {
     bigBtn.textContent = "Customize this product";
     info.appendChild(bigBtn);
 
+    const deliveryPanel = document.createElement("div");
+    deliveryPanel.className = "delivery-panel";
+    info.appendChild(deliveryPanel);
+    if (typeof renderDeliveryPanel === "function") {
+      if (typeof SHOP_READY !== "undefined" && SHOP_READY.then) {
+        SHOP_READY.then(function () { renderDeliveryPanel(deliveryPanel); });
+      } else {
+        renderDeliveryPanel(deliveryPanel);
+      }
+    }
+
     wrap.appendChild(info);
     revealOnScroll(info);
     box.appendChild(wrap);

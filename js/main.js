@@ -47,6 +47,30 @@ function formatPrice(amount) {
   return "Rs " + Number(amount || 0).toLocaleString("en-PK");
 }
 
+// Daraz-style delivery/returns info box, filled from Store settings (SHOP).
+// Call with the container element; does nothing if the element is missing.
+function renderDeliveryPanel(container) {
+  if (!container) return;
+  const fee = Number(SHOP.deliveryFee || 0);
+  const freeAbove = Number(SHOP.freeDeliveryAbove || 0);
+  const time = SHOP.deliveryTime || "";
+  const codOn = SHOP.payment && SHOP.payment.codEnabled;
+  let html = "<h4>Delivery &amp; Returns</h4><ul>";
+  if (freeAbove > 0 && fee > 0) {
+    html += "<li><span aria-hidden=\"true\">🚚</span> Delivery: " + formatPrice(fee) +
+      " (FREE on orders above " + formatPrice(freeAbove) + ")</li>";
+  } else if (fee > 0) {
+    html += "<li><span aria-hidden=\"true\">🚚</span> Delivery charges: " + formatPrice(fee) + "</li>";
+  } else {
+    html += "<li><span aria-hidden=\"true\">🚚</span> FREE delivery</li>";
+  }
+  if (time) html += "<li><span aria-hidden=\"true\">⏱️</span> " + escapeHtml(time) + "</li>";
+  if (codOn) html += "<li><span aria-hidden=\"true\">💵</span> Cash on Delivery available</li>";
+  html += "<li><span aria-hidden=\"true\">↩️</span> Easy return on non-customized items</li>";
+  html += "</ul>";
+  container.innerHTML = html;
+}
+
 function escapeHtml(text) {
   const div = document.createElement("div");
   div.textContent = text == null ? "" : String(text);

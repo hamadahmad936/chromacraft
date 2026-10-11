@@ -50,8 +50,14 @@
       </div>
     </div>
 
-    <label for="qtyInput">Quantity</label>
-    <input id="qtyInput" type="number" min="1" max="99" value="1">
+    <div class="qty-row">
+      <label>Quantity</label>
+      <div class="qty-stepper">
+        <button id="qtyMinus" type="button" aria-label="Decrease quantity">−</button>
+        <input id="qtyInput" type="number" min="1" max="99" value="1" aria-label="Quantity">
+        <button id="qtyPlus" type="button" aria-label="Increase quantity">+</button>
+      </div>
+    </div>
 
     <h3>How do you want your design?</h3>
     <label><input type="radio" name="mode" value="studio" checked> Design it for me (free)</label>
@@ -87,7 +93,11 @@
     </div>
 
     <p id="totalText"></p>
-    <button id="addToCartBtn">Add to cart</button>
+    <div id="deliveryPanel" class="delivery-panel"></div>
+    <div class="buy-row">
+      <button id="buyNowBtn" class="buy-now-btn">Buy Now</button>
+      <button id="addToCartBtn" class="add-cart-btn">Add to Cart</button>
+    </div>
     <p id="msg"></p>
   </main>
 

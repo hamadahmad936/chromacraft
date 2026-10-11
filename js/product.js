@@ -72,15 +72,21 @@ async function loadProduct() {
     }
     titleEl.textContent = product.name;
     priceEl.textContent = "";
+    priceEl.className = "price-block";
     const pct = discountPercent(product);
+    const now = document.createElement("span");
+    now.className = "now-price";
+    now.textContent = formatPrice(effectivePrice(product));
+    priceEl.appendChild(now);
     if (pct > 0) {
       const was = document.createElement("s");
+      was.className = "was-price";
       was.textContent = formatPrice(product.price);
-      was.style.marginRight = "8px";
       priceEl.appendChild(was);
-      priceEl.appendChild(document.createTextNode(formatPrice(effectivePrice(product)) + " (" + pct + "% off)"));
-    } else {
-      priceEl.textContent = formatPrice(product.price);
+      const badge = document.createElement("span");
+      badge.className = "discount-badge";
+      badge.textContent = "-" + pct + "%";
+      priceEl.appendChild(badge);
     }
     descEl.textContent = product.description || "";
     setupOptions();
@@ -538,13 +544,14 @@ async function addSelfDesignToCart() {
   return true;
 }
 
-// ===== ADD TO CART BUTTON =====
-addBtn.addEventListener("click", async function () {
+// ===== ADD TO CART / BUY NOW BUTTONS =====
+async function handleBuy(goToCart) {
   if (!product) return;
   msg.textContent = "";
   if (!checkOptions()) return;
 
-  addBtn.disabled = true;
+  const btn = goToCart ? buyNowBtn : addBtn;
+  btn.disabled = true;
 
   try {
     const added = getMode() === "studio"
@@ -552,6 +559,10 @@ addBtn.addEventListener("click", async function () {
       : await addSelfDesignToCart();
 
     if (added) {
+      if (goToCart) {
+        location.href = "cart.html";
+        return;
+      }
       msg.textContent = "Added to cart! ";
       const link = document.createElement("a");
       link.href = "cart.html";
@@ -562,11 +573,28 @@ addBtn.addEventListener("click", async function () {
     msg.textContent = e.message || "Something went wrong. Please try again.";
     console.error(e);
   } finally {
-    addBtn.disabled = false;
+    btn.disabled = false;
   }
+}
+
+addBtn.addEventListener("click", function () { handleBuy(false); });
+const buyNowBtn = document.getElementById("buyNowBtn");
+if (buyNowBtn) buyNowBtn.addEventListener("click", function () { handleBuy(true); });
+
+// Quantity stepper (− / +)
+const qtyMinus = document.getElementById("qtyMinus");
+const qtyPlus = document.getElementById("qtyPlus");
+if (qtyMinus) qtyMinus.addEventListener("click", function () {
+  qtyInput.value = clampQty(getQty() - 1);
+  updateTotal();
+});
+if (qtyPlus) qtyPlus.addEventListener("click", function () {
+  qtyInput.value = clampQty(getQty() + 1);
+  updateTotal();
 });
 
 SHOP_READY.then(function () {
+  renderDeliveryPanel(document.getElementById("deliveryPanel"));
   document.getElementById("feeText").textContent =
     SHOP.selfDesignFee > 0 ? "+" + formatPrice(SHOP.selfDesignFee) + " extra" : "no extra charge";
   loadProduct().then(updateTotal);
