@@ -8,7 +8,7 @@
 //  email below. Everything else can be changed from admin.html.
 // =====================================================================
 const DEFAULT_SHOP = {
-  name: "ChromaCraft Studio & labs",
+  name: "ChromaCraft Studio & Labs",
   adminEmail: "nobodyknows936371@gmail.com",
 
   whatsapp: "92XXXXXXXXXX",

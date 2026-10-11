@@ -735,3 +735,6 @@ main:has(~ #stickyBar) { padding-bottom: 90px; }
 .delivery-panel h4 { margin: 0 0 8px; font-family: var(--display); font-size: 1rem; }
 .delivery-panel ul { margin: 0; padding: 0; list-style: none; }
 .delivery-panel li { margin: 7px 0; font-size: 0.98rem; }
+
+/* WhatsApp float must not cover the sticky "Customize now" bar */
+body:has(#stickyBar) #waFloat { bottom: 96px; }
