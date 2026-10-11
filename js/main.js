@@ -34,7 +34,7 @@ const DEFAULT_SHOP = {
   advancePercent: 0,       // 0 = no advance needed for COD orders; e.g. 50 = customer must pay 50% upfront
   selfDesignFee: 100,      // Rs extra when a customer designs their own product
   announcement: { enabled: false, text: "", link: "" },
-  theme: { ink: "#14121f", paper: "#f4f0ff", cyan: "#19c8ff", magenta: "#ff3d9a", yellow: "#ffe234", butter: "#fff7b8" }
+  theme: { ink: "#14121f", paper: "#f4f0ff", cyan: "#19c8ff", magenta: "#ff3d9a", yellow: "#ffffff", butter: "#fff7b8" }
 };
 
 let SHOP = Object.assign({}, DEFAULT_SHOP);
