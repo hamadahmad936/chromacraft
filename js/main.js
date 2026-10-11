@@ -39,7 +39,8 @@ const DEFAULT_SHOP = {
     badge: "🎉 Launch Offer — Custom Photo Gifts",
     title: "Turn Your Photos Into",
     highlight: "Perfect Gifts",
-    subtitle: "Custom-printed mugs, magic mugs, cushions, wall clocks, bottles & photo frames — with your own photos."
+    subtitle: "Custom-printed mugs, magic mugs, cushions, wall clocks, bottles & photo frames — with your own photos.",
+    image: ""
   },
   theme: { ink: "#14121f", paper: "#f4f0ff", cyan: "#19c8ff", magenta: "#ff3d9a", yellow: "#ffffff", butter: "#fff7b8" }
 };
@@ -313,6 +314,8 @@ function renderHero() {
   setHeroText("heroTitle", h.title || d.title);
   setHeroText("heroHighlight", h.highlight || d.highlight);
   setHeroText("heroSubtitle", h.subtitle || d.subtitle);
+  const heroImg = document.getElementById("heroImg");
+  if (heroImg && h.image) heroImg.src = h.image;
 }
 
 // =====================================================================

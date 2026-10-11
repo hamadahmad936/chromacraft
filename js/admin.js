@@ -489,6 +489,7 @@ async function loadSettingsForm() {
   document.getElementById("sHeroTitle").value = hero.title || "";
   document.getElementById("sHeroHighlight").value = hero.highlight || "";
   document.getElementById("sHeroSubtitle").value = hero.subtitle || "";
+  document.getElementById("sHeroImage").value = hero.image || "";
 
   fillThemeInputs(SHOP.theme || {});
 }
@@ -555,7 +556,8 @@ document.getElementById("saveSettingsBtn").addEventListener("click", async funct
         badge: document.getElementById("sHeroBadge").value.trim(),
         title: document.getElementById("sHeroTitle").value.trim(),
         highlight: document.getElementById("sHeroHighlight").value.trim(),
-        subtitle: document.getElementById("sHeroSubtitle").value.trim()
+        subtitle: document.getElementById("sHeroSubtitle").value.trim(),
+        image: document.getElementById("sHeroImage").value.trim()
       },
 
       theme: {
