@@ -783,7 +783,7 @@ body:has(#stickyBar) #waFloat { bottom: 96px; }
   line-height: 1.15;
   margin: 0 0 12px;
 }
-.hero-copy h2 span {
+.hero-copy h2 #heroHighlight {
   background: var(--cyan);
   padding: 0 10px;
   border-radius: 8px;

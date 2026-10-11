@@ -483,6 +483,13 @@ async function loadSettingsForm() {
   document.getElementById("sAnnounceText").value = ann.text || "";
   document.getElementById("sAnnounceLink").value = ann.link || "";
 
+  const hero = SHOP.hero || {};
+  document.getElementById("sHeroEnabled").checked = hero.enabled !== false;
+  document.getElementById("sHeroBadge").value = hero.badge || "";
+  document.getElementById("sHeroTitle").value = hero.title || "";
+  document.getElementById("sHeroHighlight").value = hero.highlight || "";
+  document.getElementById("sHeroSubtitle").value = hero.subtitle || "";
+
   fillThemeInputs(SHOP.theme || {});
 }
 
@@ -541,6 +548,14 @@ document.getElementById("saveSettingsBtn").addEventListener("click", async funct
         enabled: document.getElementById("sAnnounceEnabled").checked,
         text: document.getElementById("sAnnounceText").value.trim(),
         link: document.getElementById("sAnnounceLink").value.trim()
+      },
+
+      hero: {
+        enabled: document.getElementById("sHeroEnabled").checked,
+        badge: document.getElementById("sHeroBadge").value.trim(),
+        title: document.getElementById("sHeroTitle").value.trim(),
+        highlight: document.getElementById("sHeroHighlight").value.trim(),
+        subtitle: document.getElementById("sHeroSubtitle").value.trim()
       },
 
       theme: {

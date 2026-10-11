@@ -34,6 +34,13 @@ const DEFAULT_SHOP = {
   advancePercent: 0,       // 0 = no advance needed for COD orders; e.g. 50 = customer must pay 50% upfront
   selfDesignFee: 100,      // Rs extra when a customer designs their own product
   announcement: { enabled: false, text: "", link: "" },
+  hero: {
+    enabled: true,
+    badge: "🎉 Launch Offer — Custom Photo Gifts",
+    title: "Turn Your Photos Into",
+    highlight: "Perfect Gifts",
+    subtitle: "Custom-printed mugs, magic mugs, cushions, wall clocks, bottles & photo frames — with your own photos."
+  },
   theme: { ink: "#14121f", paper: "#f4f0ff", cyan: "#19c8ff", magenta: "#ff3d9a", yellow: "#ffffff", butter: "#fff7b8" }
 };
 
@@ -289,6 +296,26 @@ function applyTheme() {
 }
 
 // =====================================================================
+//  HERO BANNER (set by the admin in Store settings)
+// =====================================================================
+function setHeroText(id, text) {
+  const el = document.getElementById(id);
+  if (el && text) el.textContent = text;
+}
+function renderHero() {
+  const hero = document.querySelector(".hero");
+  if (!hero) return;
+  const h = SHOP.hero || {};
+  const d = DEFAULT_SHOP.hero;
+  if (h.enabled === false) { hero.style.display = "none"; return; }
+  hero.style.display = "";
+  setHeroText("heroBadge", h.badge || d.badge);
+  setHeroText("heroTitle", h.title || d.title);
+  setHeroText("heroHighlight", h.highlight || d.highlight);
+  setHeroText("heroSubtitle", h.subtitle || d.subtitle);
+}
+
+// =====================================================================
 //  ANNOUNCEMENT / OFFER BAR (set by the admin in Store settings)
 // =====================================================================
 function buildAnnouncementBar() {
@@ -459,6 +486,7 @@ const SHOP_READY = (async function () {
   }
   applyTheme();
   buildAnnouncementBar();
+  renderHero();
   fillShopText();
   buildFooter();
   return SHOP;
