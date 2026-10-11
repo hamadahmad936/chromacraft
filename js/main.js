@@ -96,6 +96,26 @@ function effectivePrice(p) {
   return (sale > 0 && sale < price) ? sale : price;
 }
 
+// Price for a specific size/variant. Products can define sizePrices = { "24x36": 6950, ... }.
+// A size-specific price overrides the base price; sizes without an entry use the base price.
+function priceForSize(p, size) {
+  if (p && size && p.sizePrices && p.sizePrices[size] != null) {
+    const sp = Number(p.sizePrices[size]);
+    if (sp > 0) return sp;
+  }
+  return effectivePrice(p);
+}
+
+// Lowest and highest price across all sizes (for "Rs X - Rs Y" range display)
+function priceRange(p) {
+  const base = effectivePrice(p);
+  const sp = (p && p.sizePrices) || {};
+  const vals = Object.keys(sp).map(function (k) { return Number(sp[k]); }).filter(function (v) { return v > 0; });
+  if (!vals.length) return null;
+  vals.push(base);
+  return { min: Math.min.apply(null, vals), max: Math.max.apply(null, vals) };
+}
+
 // 0 if no discount, otherwise a whole-number percent off
 function discountPercent(p) {
   const price = Number((p && p.price) || 0);

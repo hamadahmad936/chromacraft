@@ -77,6 +77,49 @@ fType.addEventListener("change", function () {
   if (!current || isDefault) fGuide.value = GUIDE_BY_TYPE[fType.value] || "";
 });
 
+// ===== PRICE PER SIZE (variants) =====
+const sizePricesBox = document.getElementById("sizePricesBox");
+const sizePricesEl = document.getElementById("sizePrices");
+
+function renderSizePriceInputs(saved) {
+  const sizes = parseList(fSizes.value);
+  sizePricesEl.textContent = "";
+  if (!sizes.length) {
+    sizePricesBox.style.display = "none";
+    return;
+  }
+  sizePricesBox.style.display = "block";
+  saved = saved || {};
+  sizes.forEach(function (s) {
+    const row = document.createElement("div");
+    row.style.cssText = "display:flex; align-items:center; gap:8px; margin-bottom:6px;";
+    const label = document.createElement("span");
+    label.textContent = s;
+    label.style.cssText = "min-width:90px; font-weight:bold;";
+    const input = document.createElement("input");
+    input.type = "number";
+    input.min = "0";
+    input.placeholder = "Rs (empty = main price)";
+    input.dataset.size = s;
+    input.style.cssText = "width:170px;";
+    if (saved[s] != null && Number(saved[s]) > 0) input.value = saved[s];
+    row.appendChild(label);
+    row.appendChild(input);
+    sizePricesEl.appendChild(row);
+  });
+}
+
+function collectSizePrices() {
+  const out = {};
+  sizePricesEl.querySelectorAll("input[data-size]").forEach(function (inp) {
+    const v = Number(inp.value);
+    if (v > 0) out[inp.dataset.size] = v;
+  });
+  return out;
+}
+
+fSizes.addEventListener("input", function () { renderSizePriceInputs(); });
+
 function resetForm() {
   editingId = null;
   document.getElementById("formTitle").textContent = "Add a product";
@@ -91,6 +134,7 @@ function resetForm() {
   fGuide.value = GUIDE_BY_TYPE.mug;
   fDesc.value = "";
   fSizes.value = "";
+  renderSizePriceInputs();
   fColors.value = "";
   fActive.checked = true;
     fPhoto.value = "";
@@ -113,6 +157,7 @@ function startEdit(id, p) {
   fGuide.value = p.guideFile || "";
   fDesc.value = p.description || "";
   fSizes.value = (p.sizes || []).join(", ");
+  renderSizePriceInputs(p.sizePrices);
   fColors.value = (p.colors || []).join(", ");
   fActive.checked = p.active !== false;
     fPhoto.value = "";
@@ -154,6 +199,7 @@ saveBtn.addEventListener("click", async function () {
       guideFile: guideFile,
       description: fDesc.value.trim(),
       sizes: parseList(fSizes.value),
+      sizePrices: collectSizePrices(),
       colors: parseList(fColors.value),
       active: fActive.checked,
       updatedAt: firebase.firestore.FieldValue.serverTimestamp()

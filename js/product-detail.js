@@ -74,8 +74,12 @@ async function loadDetail() {
 
       const price = document.createElement("p");
     price.id = "detailPrice";
+    const range = priceRange(p);
     const pct = discountPercent(p);
-    if (pct > 0) {
+    if (range && range.min !== range.max) {
+      // size-based pricing: show "Rs X - Rs Y"
+      price.textContent = formatPrice(range.min) + " - " + formatPrice(range.max);
+    } else if (pct > 0) {
       const was = document.createElement("s");
       was.textContent = formatPrice(p.price);
       was.style.marginRight = "8px";

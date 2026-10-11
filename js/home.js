@@ -92,7 +92,10 @@ function renderProducts() {
 
         const price = document.createElement("p");
     const pct = discountPercent(p);
-    if (pct > 0) {
+    const range = priceRange(p);
+    if (range && range.min !== range.max) {
+      price.textContent = formatPrice(range.min) + " - " + formatPrice(range.max);
+    } else if (pct > 0) {
       price.className = "price-discount";
       const was = document.createElement("s");
       was.textContent = formatPrice(p.price);

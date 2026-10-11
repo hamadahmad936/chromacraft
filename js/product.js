@@ -71,23 +71,7 @@ async function loadProduct() {
       return;
     }
     titleEl.textContent = product.name;
-    priceEl.textContent = "";
-    priceEl.className = "price-block";
-    const pct = discountPercent(product);
-    const now = document.createElement("span");
-    now.className = "now-price";
-    now.textContent = formatPrice(effectivePrice(product));
-    priceEl.appendChild(now);
-    if (pct > 0) {
-      const was = document.createElement("s");
-      was.className = "was-price";
-      was.textContent = formatPrice(product.price);
-      priceEl.appendChild(was);
-      const badge = document.createElement("span");
-      badge.className = "discount-badge";
-      badge.textContent = "-" + pct + "%";
-      priceEl.appendChild(badge);
-    }
+    renderPriceBlock();
     descEl.textContent = product.description || "";
     setupOptions();
     setupCanvas();
@@ -120,8 +104,20 @@ function fillSelect(select, row, list, placeholder) {
 
 function setupOptions() {
   needSize = fillSelect(sizeSelect, sizeRow, product.sizes, "Choose a size");
+  // show each size's own price in the dropdown, e.g. "24x36 - Rs 6,950"
+  if (needSize && product.sizePrices) {
+    Array.prototype.forEach.call(sizeSelect.options, function (o) {
+      if (o.value && product.sizePrices[o.value] != null && Number(product.sizePrices[o.value]) > 0) {
+        o.textContent = o.value + " - " + formatPrice(Number(product.sizePrices[o.value]));
+      }
+    });
+  }
   needColor = fillSelect(colorSelect, colorRow, product.colors, "Choose a color");
   optionsBox.style.display = (needSize || needColor) ? "block" : "none";
+  sizeSelect.addEventListener("change", function () {
+    renderPriceBlock();
+    updateTotal();
+  });
 }
 
 function checkOptions() {
@@ -365,10 +361,35 @@ function getQty() {
   return clampQty(qtyInput.value);
 }
 
-// price of ONE item
+// price of ONE item (size-specific when a size with its own price is chosen)
 function currentPrice() {
   if (!product) return 0;
-  return effectivePrice(product) + (getMode() === "self" ? Number(SHOP.selfDesignFee || 0) : 0);
+  const size = sizeSelect ? sizeSelect.value : "";
+  return priceForSize(product, size) + (getMode() === "self" ? Number(SHOP.selfDesignFee || 0) : 0);
+}
+
+// re-render the big price block when the chosen size changes its price
+function renderPriceBlock() {
+  if (!product) return;
+  const size = sizeSelect ? sizeSelect.value : "";
+  const unit = priceForSize(product, size);
+  const pct = (size && product.sizePrices && Number(product.sizePrices[size]) > 0) ? 0 : discountPercent(product);
+  priceEl.textContent = "";
+  priceEl.className = "price-block";
+  const now = document.createElement("span");
+  now.className = "now-price";
+  now.textContent = formatPrice(unit);
+  priceEl.appendChild(now);
+  if (pct > 0) {
+    const was = document.createElement("s");
+    was.className = "was-price";
+    was.textContent = formatPrice(product.price);
+    priceEl.appendChild(was);
+    const badge = document.createElement("span");
+    badge.className = "discount-badge";
+    badge.textContent = "-" + pct + "%";
+    priceEl.appendChild(badge);
+  }
 }
 
 function updateTotal() {
@@ -481,7 +502,7 @@ async function addStudioToCart() {
 
   const item = itemDetails();
   item.mode = "studio";
-  item.price = effectivePrice(product);
+  item.price = priceForSize(product, sizeSelect.value || "");
   item.designFee = 0;
   item.designUrl = designUrls[0];
   item.designUrls = designUrls;
