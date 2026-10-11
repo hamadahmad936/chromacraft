@@ -35,13 +35,21 @@
     <h2>My account</h2>
 
     <!-- SHOWN WHEN LOGGED OUT -->
-    <div id="loggedOut">
-      <h3>Log in or create an account</h3>
-      <input id="email" type="email" placeholder="Email"><br>
-      <input id="password" type="password" placeholder="Password (at least 6 characters)"><br>
-      <button id="loginBtn">Log in</button>
-      <button id="signupBtn">Create account</button>
-      <button id="resetBtn">Forgot password?</button>
+    <div id="loggedOut" class="auth-card">
+      <div class="auth-icon">👋</div>
+      <h3>Welcome!</h3>
+      <p class="auth-sub">Log in to track your orders and check out faster.</p>
+      <label class="auth-field">Email
+        <input id="email" type="email" placeholder="you@example.com" autocomplete="email">
+      </label>
+      <label class="auth-field">Password
+        <input id="password" type="password" placeholder="At least 6 characters" autocomplete="current-password">
+      </label>
+      <div class="auth-actions">
+        <button id="loginBtn" class="auth-primary">Log in</button>
+        <button id="signupBtn">Create account</button>
+      </div>
+      <button id="resetBtn" class="auth-link">Forgot password?</button>
       <p id="authMsg"></p>
     </div>
 

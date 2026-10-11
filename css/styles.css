@@ -831,3 +831,51 @@ body:has(#stickyBar) #waFloat { bottom: 96px; }
 /* Compact customizer: keep the outer white working area tight around the canvas */
 #selfPanel { max-width: 720px; margin-left: auto; margin-right: auto; }
 .canvas-container { margin-left: auto; margin-right: auto; }
+
+/* ===== ACCOUNT / AUTH (professional login card) ===== */
+.auth-card {
+  max-width: 440px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+.auth-icon { font-size: 2.8rem; line-height: 1; }
+.auth-card h3 {
+  font-family: var(--display);
+  font-size: 1.7rem;
+  margin: 10px 0 6px;
+}
+.auth-sub { margin: 0 0 20px; color: #444; }
+.auth-field {
+  display: block;
+  text-align: left;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+.auth-field input {
+  width: 100%;
+  margin-top: 6px;
+  box-sizing: border-box;
+}
+.auth-actions {
+  display: flex;
+  gap: 12px;
+  margin: 18px 0 10px;
+}
+.auth-actions button { flex: 1; margin: 0; }
+.auth-primary {
+  background: var(--cyan);
+  padding: 14px 20px;
+  font-size: 1.1rem;
+}
+.auth-link {
+  background: none;
+  border: none;
+  box-shadow: none;
+  text-decoration: underline;
+  font-weight: 600;
+  color: #555;
+  padding: 6px 10px;
+}
+.auth-link:hover { transform: none; box-shadow: none; color: var(--ink); }
+#authMsg { margin-top: 14px; }
