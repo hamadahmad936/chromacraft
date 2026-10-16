@@ -30,6 +30,11 @@ body {
   background-size: 18px 18px;
 }
 
+/* Never allow horizontal page scroll: on phones an overflowing element made
+   the sticky header's pink background stop short of the right edge while the
+   dotted body background continued. `clip` (not `hidden`) keeps sticky working. */
+html, body { overflow-x: clip; }
+
 ::selection { background: var(--yellow); }
 
 img { max-width: 100%; height: auto; }
